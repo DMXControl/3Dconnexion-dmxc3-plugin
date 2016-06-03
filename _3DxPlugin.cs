@@ -11,6 +11,7 @@ using Lumos.GUI.Connection;
 using Lumos.GUI.Facade.DeviceProperties;
 using LumosLIB.Kernel.Scene.Fanning;
 using org.dmxc.lumos.Kernel.PropertyType;
+using LumosLIB.Tools;
 
 namespace Lumos3DconnexionPlugin
 {
@@ -219,11 +220,13 @@ namespace Lumos3DconnexionPlugin
             if (_colorFacade == null) return;
 
             ColorFannedValue v = _colorFacade.ProgrammerValue as ColorFannedValue;
-            if (v == null)
+            if (v == null || v.Values.NullToEmpty().All(c => c.ColorsEqual(System.Drawing.Color.White)))
                 _colorFacade.ProgrammerValue = ColorFannedValue.FromColor(System.Drawing.Color.Red);
             else
             {
+                var c = v.rotate((double)value / 250);
 
+                _colorFacade.ProgrammerValue = c;
             }
         }
 
