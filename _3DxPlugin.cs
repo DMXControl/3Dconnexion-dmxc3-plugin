@@ -15,6 +15,9 @@ using LumosLIB.Tools;
 
 namespace Lumos3DconnexionPlugin
 {
+    /// <summary>
+    /// Plugin Class. Inhertited from GuiPluginBase
+    /// </summary>
     public class _3DxPlugin : Lumos.GUI.Plugin.GuiPluginBase
     {
         const string PLUGIN_ID = "{6C1AC89E-BBED-4D76-9D63-54FEFA74BF15}";
@@ -29,6 +32,9 @@ namespace Lumos3DconnexionPlugin
         { 
         }
 
+        /// <summary>
+        /// Initialize Plugin. This is called once when Plugin is created @ Startup
+        /// </summary>
         protected override void initializePlugin()
         {
             this._form = new _3DxForm();
@@ -36,6 +42,9 @@ namespace Lumos3DconnexionPlugin
             this.loadSettings();
         }
 
+        /// <summary>
+        /// This is called when Plugin needs to stop (e.g. shutdown of DMXC, or Plugin is disabled by user)
+        /// </summary>
         protected override void shutdownPlugin()
         {
             this.saveSettings();
@@ -47,18 +56,27 @@ namespace Lumos3DconnexionPlugin
             }
         }
 
+        /// <summary>
+        /// This is called when Plugin is enabled (e.g. startup of DMXC or Plugin enabled by user)
+        /// </summary>
         protected override void startupPlugin()
         {
             WindowManager.getInstance().AddWindow(this._form);
             this._form.PluginEnabled = true;
         }
 
+        /// <summary>
+        /// Called when a connection to a Kernel has been established
+        /// </summary>
         public override void connectionEstablished()
         {
             base.connectionEstablished();
             ConnectionManager.getInstance().GuiSession.SelectedDeviceGroupChanged += onSelectedDeviceGroupChanged;
         }
 
+        /// <summary>
+        /// Called when connection to Kernel is closing
+        /// </summary>
         public override void connectionClosing()
         {
             base.connectionClosing();
@@ -72,11 +90,13 @@ namespace Lumos3DconnexionPlugin
 
         private void loadSettings()
         {
+            //Check whether ResourceManager has a setting
             if (ResourceManager.getInstance().existsResource(EResourceType.APPLICATION, SETTINGS_FILE))
             {
                 var r = ResourceManager.getInstance().loadResource(EResourceAccess.READ, EResourceType.APPLICATION, SETTINGS_FILE);
                 if (r.ManagedData != null)
                 {
+                    //Loop through all axis and load settings if existing
                     foreach (E3DxAchsis a in Enum.GetValues(typeof(E3DxAchsis)))
                     {
                         if (r.ManagedData.hasValue<int>(a.ToString() + "-Deadzone"))
@@ -95,7 +115,9 @@ namespace Lumos3DconnexionPlugin
 
         private void saveSettings()
         {
+            //Create new ManagedTreeItem
             ManagedTreeItem i = new ManagedTreeItem("3DxPlugin");
+            //Loop through all axis and save settings
             foreach (E3DxAchsis a in Enum.GetValues(typeof(E3DxAchsis)))
             {
                 int dz = this._form.GetAxisDeadzone(a);
