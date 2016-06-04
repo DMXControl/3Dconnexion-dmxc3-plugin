@@ -47,7 +47,7 @@ namespace Lumos3DconnexionPlugin
 
             _device.Motion += new EventHandler<_3DconnexionDriver.MotionEventArgs>(_device_Motion);
             _device.ZeroPoint += new EventHandler(_device_ZeroPoint);
-            _device.DeviceChange += new EventHandler<_3DconnexionDriver.DeviceChangeEventArgs>(_device_DeviceChange);
+            //_device.DeviceChange += new EventHandler<_3DconnexionDriver.DeviceChangeEventArgs>(_device_DeviceChange);
 
             _3dxDeviceTimer.Interval = 2000;
             _3dxDeviceTimer.Tick += new EventHandler(_3dxDeviceTimer_Tick);
@@ -311,9 +311,9 @@ namespace Lumos3DconnexionPlugin
         private void checkBoxLED_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxLED.Checked)
-                _device.LEDs = -1;
+                _device.LEDs = -1; //All LEDs on
             else
-                _device.LEDs = 0;
+                _device.LEDs = 0; //All LEDs off
             log.Debug("Set LED to {0}", _device.LEDs);
         }
 
