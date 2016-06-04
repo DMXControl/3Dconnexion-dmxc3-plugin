@@ -20,6 +20,9 @@ namespace Lumos3DconnexionPlugin
     /// </summary>
     public class _3DxPlugin : Lumos.GUI.Plugin.GuiPluginBase
     {
+        /// <summary>
+        /// Every Plugin needs a unique ID
+        /// </summary>
         const string PLUGIN_ID = "{6C1AC89E-BBED-4D76-9D63-54FEFA74BF15}";
 
         private static readonly ILumosLog log = LumosLogger.getInstance<_3DxPlugin>();

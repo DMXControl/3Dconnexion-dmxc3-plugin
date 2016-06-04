@@ -27,7 +27,7 @@ namespace Lumos3DconnexionPlugin
         {
             if (ResetOnDirectionChange)
             {
-                if ((value < 0 && lastValue > 0) || (value > 0 && lastValue < 0))
+                if (Math.Sign(value) != Math.Sign(lastValue))
                     Reset();
                 lastValue = value;
             }
