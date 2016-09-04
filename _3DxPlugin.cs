@@ -185,8 +185,7 @@ namespace Lumos3DconnexionPlugin
                         case EPropertyType.Gobo: 
                             _goboFacade = prop;
                             _goboGobos.Clear();
-                            var propertyEnum = prop.MergedGUIPropertyType as IGUIEnumPropertyType;
-                            _goboGobos.AddRange(propertyEnum.EnumValues.OfType<Gobo>());
+                            _goboGobos.AddRange(prop.EnumValues.Select(c => GoboTools.ToGobo(c)));
                             break;
                         case EPropertyType.Shutter: _shutterFacade = prop; break;
                     }
@@ -245,8 +244,8 @@ namespace Lumos3DconnexionPlugin
             if (_colorFacade == null) return;
 
             ColorFannedValue v = _colorFacade.ProgrammerValue as ColorFannedValue;
-            if (v == null || v.Values.NullToEmpty().All(c => c.ColorsEqual(System.Drawing.Color.White)))
-                _colorFacade.ProgrammerValue = ColorFannedValue.FromColor(System.Drawing.Color.Red);
+            if (v == null || v.Values.NullToEmpty().All(c => c.ColorsEqual(LumosColor.White)))
+                _colorFacade.ProgrammerValue = ColorFannedValue.FromLumosColor(LumosColor.FromColor(System.Drawing.Color.Red));
             else
             {
                 var c = v.rotate((double)value / 250);
@@ -265,7 +264,7 @@ namespace Lumos3DconnexionPlugin
             else
             {
                 var c = v.add((double)panvalue / 250, (double)tiltvalue / 250);
-                if (!c.isInRange(_positionLB, _positionHB))
+                if (c.isInRange(_positionLB, _positionHB) == false)
                     c = c.trimToRange(_positionLB, _positionHB);
 
                 _positionFacade.ProgrammerValue = c;
@@ -284,7 +283,7 @@ namespace Lumos3DconnexionPlugin
             else
             {
                 var c = v.add((double)value / 100);
-                if (!c.isInRange(_zoomLB, _zoomHB))
+                if (c.isInRange(_zoomLB, _zoomHB) == false)
                     c = c.trimToRange(_zoomLB, _zoomHB);
 
                 _zoomFacade.ProgrammerValue = c;
@@ -307,7 +306,7 @@ namespace Lumos3DconnexionPlugin
                 else
                 {
                     var c = v.add((double)value / 500);
-                    if (!c.isInRange(_intensityLB, _intensityHB))
+                    if (c.isInRange(_intensityLB, _intensityHB) == false)
                         c = c.trimToRange(_intensityLB, _intensityHB);
 
                     _dimmerFacade.ProgrammerValue = c;
