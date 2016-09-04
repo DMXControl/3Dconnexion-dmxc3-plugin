@@ -81,10 +81,10 @@ namespace Lumos3DconnexionPlugin
             initDone = true;
         }
 
-        void _device_DeviceChange(object sender, _3DconnexionDriver.DeviceChangeEventArgs e)
-        {
-            log.Debug("Device Changed: {0}, {1}", e.DeviceID, e.Type);
-        }
+        //void _device_DeviceChange(object sender, _3DconnexionDriver.DeviceChangeEventArgs e)
+        //{
+        //    log.Debug("Device Changed: {0}, {1}", e.DeviceID, e.Type);
+        //}
 
         private void _eventTimer_Tick(object sender, EventArgs e)
         {
