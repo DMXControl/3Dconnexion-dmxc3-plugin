@@ -55,8 +55,6 @@ namespace Lumos3DconnexionPlugin
             _eventTimer.Interval = 100;
             _eventTimer.Tick += new EventHandler(_eventTimer_Tick);
 
-            Lumos.GUI.WindowManager.getInstance().MainFormWindow.WndProcHooks += new Action<Message>(MainFormWindow_WndProcHooks);
-
             _comboBoxes.Add(cbTx);
             _comboBoxes.Add(cbTy);
             _comboBoxes.Add(cbTz);
@@ -118,7 +116,11 @@ namespace Lumos3DconnexionPlugin
 
         private void MainFormWindow_WndProcHooks(Message obj)
         {
-            _device.ProcessWindowMessage(obj.Msg, obj.WParam, obj.LParam);
+            try { _device.ProcessWindowMessage(obj.Msg, obj.WParam, obj.LParam); }
+            catch (Exception e)
+            {
+                log.Debug("Error in WndProcHooks: {0}", e, e.Message);
+            }
         }
 
         private void _device_ZeroPoint(object sender, EventArgs e)
@@ -221,6 +223,11 @@ namespace Lumos3DconnexionPlugin
                 _eventTimer.Enabled = value;
                 if (!value)
                     _device.CloseDevice();
+
+                //First deregister, then register to ensure Event is only registered once.
+                Lumos.GUI.WindowManager.getInstance().MainFormWindow.WndProcHooks -= MainFormWindow_WndProcHooks;
+                if (value)
+                    Lumos.GUI.WindowManager.getInstance().MainFormWindow.WndProcHooks += MainFormWindow_WndProcHooks;
             }
         }
 
