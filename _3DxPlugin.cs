@@ -9,6 +9,7 @@ using Lumos.GUI.Resource;
 using org.dmxc.lumos.Kernel.DeviceProperties;
 using Lumos.GUI.Connection;
 using Lumos.GUI.Facade.DeviceProperties;
+using LumosLIB.Kernel.Plugin;
 using LumosLIB.Kernel.Scene.Fanning;
 using org.dmxc.lumos.Kernel.PropertyType;
 using LumosLIB.Tools;
@@ -29,6 +30,7 @@ namespace Lumos3DconnexionPlugin
         private static readonly LumosResourceMetadata SETTINGS_FILE = new LumosResourceMetadata("_3DxPluginSettings.xml", ELumosResourceType.MANAGED_TREE);
 
         private _3DxForm _form;
+        private int exceptionCounter;
 
         public _3DxPlugin() 
             : base(PLUGIN_ID, "3Dconnexion Plugin") 
@@ -41,7 +43,8 @@ namespace Lumos3DconnexionPlugin
         protected override void initializePlugin()
         {
             this._form = new _3DxForm();
-            this._form.DeviceMotion += new EventHandler<_3DxMotionEventArgs>(_form_DeviceMotion);
+            this._form.DeviceMotion += _form_DeviceMotion;
+            this._form.PluginError += _form_PluginError;
             this.loadSettings();
         }
 
@@ -57,6 +60,8 @@ namespace Lumos3DconnexionPlugin
                 this._form.PluginEnabled = false;
                 this._form.Hide();
             }
+
+            ClearAllFacades();
         }
 
         /// <summary>
@@ -66,6 +71,7 @@ namespace Lumos3DconnexionPlugin
         {
             WindowManager.getInstance().AddWindow(this._form);
             this._form.PluginEnabled = true;
+            this.exceptionCounter = 0;
         }
 
         /// <summary>
@@ -133,6 +139,26 @@ namespace Lumos3DconnexionPlugin
             ResourceManager.getInstance().saveResource(EResourceType.APPLICATION, r);
         }
 
+        protected override void DisposePlugin(bool disposing)
+        {
+            base.DisposePlugin(disposing);
+            if (_form != null)
+            {
+                _form.PluginEnabled = false;
+                _form.Dispose();
+                _form = null;
+            }
+        }
+
+        private void _form_PluginError(object sender, ExceptionEventArgs e)
+        {
+            exceptionCounter++;
+            bool? status = null;
+            if (exceptionCounter >= 5)
+                status = false;
+            OnPluginError(new ErrorEventArgs(status, e.ExceptionObject));
+        }
+
         #region Dispatch 3Dx Value to Lumos
 
         private readonly IncrementSupport _goboIncrement = new IncrementSupport(10000) { ResetOnDirectionChange = true },
@@ -153,6 +179,7 @@ namespace Lumos3DconnexionPlugin
 
         private void onSelectedDeviceGroupChanged(Object sender, EventArgs e)
         {
+            if (!Enabled) return;
             if (!ConnectionManager.getInstance().Connected) return;
 
             var s = ConnectionManager.getInstance().GuiSession;

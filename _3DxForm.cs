@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Lumos.GUI.BaseWindow;
+using LumosLIB.Kernel.Log;
 using LumosLIB.Tools;
 using org.dmxc.lumos.Kernel.DeviceProperties;
 
@@ -37,11 +38,19 @@ namespace Lumos3DconnexionPlugin
         private readonly List<ComboBox> _comboBoxes = new List<ComboBox>();
         private readonly bool initDone = false;
 
+        private readonly ILumosLog _exceptionLog;
+
         internal event EventHandler<_3DxMotionEventArgs> DeviceMotion;
+        internal event EventHandler<ExceptionEventArgs> PluginError; 
 
         public _3DxForm()
         {
             InitializeComponent();
+
+            _exceptionLog = new SingleExceptionDecorator(log)
+            {
+                ReLogCount = 10
+            };
 
             _device = new _3DconnexionDriver._3DconnexionDevice("DMXC3_3DxPlugin");
 
@@ -84,6 +93,12 @@ namespace Lumos3DconnexionPlugin
         //    log.Debug("Device Changed: {0}, {1}", e.DeviceID, e.Type);
         //}
 
+        private void DisposeStuff()
+        {
+            DeviceMotion = null;
+            PluginError = null;
+        }
+
         private void _eventTimer_Tick(object sender, EventArgs e)
         {
             _3DxMotionEventArgs args = new _3DxMotionEventArgs();
@@ -119,7 +134,9 @@ namespace Lumos3DconnexionPlugin
             try { _device.ProcessWindowMessage(obj.Msg, obj.WParam, obj.LParam); }
             catch (Exception e)
             {
-                log.Debug("Error in WndProcHooks: {0}", e, e.Message);
+                _exceptionLog.Debug("Error in WndProcHooks: {0}", e, e.Message);
+                if (PluginError != null)
+                    PluginError(this, new ExceptionEventArgs(e));
             }
         }
 
