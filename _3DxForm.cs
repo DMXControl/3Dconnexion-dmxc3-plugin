@@ -159,6 +159,12 @@ namespace Lumos3DconnexionPlugin
         {
             if (zone < 0 || zone > NUD_MAX)
                 return false;
+
+            if (this.InvokeRequired)
+            {
+                return (bool) this.Invoke(new Func<E3DxAchsis, int, bool>(SetAxisDeadzone), axis, zone);
+            }
+
             switch (axis)
             {
                 case E3DxAchsis.TX: nudTx.Value = zone; return true;
