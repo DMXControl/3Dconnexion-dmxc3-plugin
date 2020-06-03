@@ -38,8 +38,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="3DconnexionDriver">
-      <HintPath>..\3Dconnexion-driver\bin\Release\3DconnexionDriver.dll</HintPath>
+    <Reference Include="3DconnexionDriver, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>dep\3DconnexionDriver.dll</HintPath>
     </Reference>
     <Reference Include="DMXLIB">
       <HintPath>dep\DMXLIB.dll</HintPath>
