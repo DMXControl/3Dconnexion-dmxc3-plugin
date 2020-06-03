@@ -20,6 +20,7 @@ namespace Lumos3DconnexionPlugin
 
         private readonly _3DconnexionDriver._3DconnexionDevice _device;
 
+        private int deviceId;
         private readonly System.Windows.Forms.Timer _3dxDeviceTimer = new System.Windows.Forms.Timer();
         private readonly System.Windows.Forms.Timer _eventTimer = new System.Windows.Forms.Timer();
 
@@ -36,6 +37,8 @@ namespace Lumos3DconnexionPlugin
             InitializeComponent();
 
             this.TabText = this.Text = _3DxPlugin.PLUGIN_NAME;
+            this.MenuIconKey = "3DxIcon";
+            this.Icon = Properties.Resources._3DxIcon_16.ImageToIcon();
 
             _exceptionLog = new SingleExceptionDecorator(log)
             {
@@ -46,7 +49,6 @@ namespace Lumos3DconnexionPlugin
 
             _device.Motion += new EventHandler<_3DconnexionDriver.MotionEventArgs>(_device_Motion);
             _device.ZeroPoint += new EventHandler(_device_ZeroPoint);
-            //_device.DeviceChange += new EventHandler<_3DconnexionDriver.DeviceChangeEventArgs>(_device_DeviceChange);
 
             _3dxDeviceTimer.Interval = 2000;
             _3dxDeviceTimer.Tick += new EventHandler(_3dxDeviceTimer_Tick);
@@ -60,11 +62,6 @@ namespace Lumos3DconnexionPlugin
             nudTx.Maximum = nudTy.Maximum = nudTz.Maximum =
                 nudRx.Maximum = nudRy.Maximum = nudRz.Maximum = NUD_MAX;
         }
-
-        //void _device_DeviceChange(object sender, _3DconnexionDriver.DeviceChangeEventArgs e)
-        //{
-        //    log.Debug("Device Changed: {0}, {1}", e.DeviceID, e.Type);
-        //}
 
         private void DisposeStuff()
         {
@@ -195,6 +192,9 @@ namespace Lumos3DconnexionPlugin
         {
             if (!_device.IsAvailable)
                 Init();
+            //Detect Change
+            else if(_device.DeviceID != this.deviceId)
+                Init();
         }
 
         private void Init()
@@ -209,6 +209,7 @@ namespace Lumos3DconnexionPlugin
                     _device.InitDevice(Lumos.GUI.WindowManager.getInstance().MainFormWindow.Handle);
                     this.labelDeviceName.Text = _device.DeviceName;
                     this.labelFirmware.Text = _device.FirmwareVersion;
+                    this.deviceId = _device.DeviceID;
                     string path = _device.IconPath;
                     if (!String.IsNullOrEmpty(path) && System.IO.File.Exists(path))
                     {

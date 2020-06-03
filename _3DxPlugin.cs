@@ -10,17 +10,20 @@ using org.dmxc.lumos.Kernel.DeviceProperties;
 using Lumos.GUI.Connection;
 using Lumos.GUI.Facade.DeviceProperties;
 using Lumos.GUI.Input.v2;
-using LumosLIB.Kernel.Plugin;
 using LumosLIB.Kernel.Scene.Fanning;
 using org.dmxc.lumos.Kernel.PropertyType;
 using LumosLIB.Tools;
+using System.Collections.ObjectModel;
+using System.Drawing.Imaging;
+using System.IO;
+using ErrorEventArgs = LumosLIB.Kernel.Plugin.ErrorEventArgs;
 
 namespace Lumos3DconnexionPlugin
 {
     /// <summary>
     /// Plugin Class. Inhertited from GuiPluginBase
     /// </summary>
-    public class _3DxPlugin : Lumos.GUI.Plugin.GuiPluginBase
+    public class _3DxPlugin : Lumos.GUI.Plugin.GuiPluginBase, IResourceProvider
     {
         /// <summary>
         /// Every Plugin needs a unique ID
@@ -55,6 +58,8 @@ namespace Lumos3DconnexionPlugin
             this._form.DeviceMotion += _form_DeviceMotion;
             this._form.PluginError += _form_PluginError;
             this.loadSettings();
+
+            ResourceManager.getInstance().registerResourceProvider(this);
         }
 
         /// <summary>
@@ -165,6 +170,55 @@ namespace Lumos3DconnexionPlugin
                 var p = _inputSources.TryGetWithDefault(kvp.Key);
                 p?.SetValue(kvp.Value);
             }
+        }
+
+        public bool existsResource(EResourceDataType type, string name)
+        {
+            if (type == EResourceDataType.ICON || type == EResourceDataType.PICTURE || type == EResourceDataType.SYMBOL)
+            {
+                if (name.Equals("3DxIcon") || name.Equals("3DxIcon_16") || name.Equals("3DxIcon_32"))
+                    return true;
+            }
+            return false;
+        }
+
+        public ReadOnlyCollection<LumosDataMetadata> allResources(EResourceDataType type)
+        {
+            if (type == EResourceDataType.ICON || type == EResourceDataType.PICTURE || type == EResourceDataType.SYMBOL)
+            {
+                List<LumosDataMetadata> ret = new List<LumosDataMetadata>()
+                {
+                    new LumosDataMetadata("3DxIcon"),
+                    new LumosDataMetadata("3DxIcon_16"),
+                    new LumosDataMetadata("3DxIcon_32"),
+                };
+                return ret.AsReadOnly();
+            }
+
+            return null;
+        }
+
+        public byte[] loadResource(EResourceDataType type, string name)
+        {
+            if (type == EResourceDataType.ICON || type == EResourceDataType.PICTURE || type == EResourceDataType.SYMBOL)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    switch (name)
+                    {
+                        case "3DxIcon":
+                        case "3DxIcon_32":
+                            Properties.Resources._3DxIcon_32.Save(ms, ImageFormat.Png);
+                            return ms.ToArray();
+
+                        case "3DxIcon_16":
+                            Properties.Resources._3DxIcon_16.Save(ms, ImageFormat.Png);
+                            return ms.ToArray();
+                    }
+                }
+            }
+
+            return null;
         }
 
         #endregion
