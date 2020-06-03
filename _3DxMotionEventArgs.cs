@@ -8,6 +8,6 @@ namespace Lumos3DconnexionPlugin
 {
     class _3DxMotionEventArgs : EventArgs
     {
-        public readonly Dictionary<EPropertyType, int> AxisValues = new Dictionary<EPropertyType, int>();
+        public readonly Dictionary<E3DxAchsis, int> AxisValues = new Dictionary<E3DxAchsis, int>();
     }
 }
