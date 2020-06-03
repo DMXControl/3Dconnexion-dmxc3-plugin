@@ -31,13 +31,13 @@ pipeline {
 				script{
 					try {
 						println('Copy artefacts from Job \"Lumos (Pipeline)/' + env.BRANCH_NAME.replaceAll("/", "%2F") + '\"')
-						copyArtifacts(projectName: 'Lumos (Pipeline)/' + env.BRANCH_NAME.replaceAll("/", "%2F"), flatten: true, filter: 'LumosGUI/bin/Release/LumosGUI.exe, LumosGUI/bin/Release/WeifenLuo.WinFormsUI.Docking.dll, LumosGUI/bin/Release/LumosControls.dll, Lumos/bin/Release/LumosLIB.dll, Lumos/bin/Release/log4net.dll, ', target: 'references');
+						copyArtifacts(projectName: 'Lumos (Pipeline)/' + env.BRANCH_NAME.replaceAll("/", "%2F"), flatten: true, filter: 'LumosGUI/bin/Release/*', target: 'dep');
 					} catch (hudson.AbortException e) {
 						println('Job \"Lumos (Pipeline)/' + env.BRANCH_NAME.replaceAll("/", "%2F") + '\" does not exist. Copy from default Job')
-						copyArtifacts(projectName: 'Lumos (Pipeline)/master', flatten: true, filter: 'LumosGUI/bin/Release/LumosGUI.exe, LumosGUI/bin/Release/WeifenLuo.WinFormsUI.Docking.dll, LumosGUI/bin/Release/LumosControls.dll, Lumos/bin/Release/LumosLIB.dll, Lumos/bin/Release/log4net.dll, ', target: 'references');
+						copyArtifacts(projectName: 'Lumos (Pipeline)/master', flatten: true, filter: 'LumosGUI/bin/Release/*', target: 'dep');
 					}
 					
-					copyArtifacts(projectName: '3Dconnexion Driver (Pipeline)', flatten: true, filter: 'bin/Release/3DconnexionDriver.dll', target: 'references');
+					copyArtifacts(projectName: '3Dconnexion Driver (Pipeline)', flatten: true, target: 'dep');
 				}
 			}
 		}
