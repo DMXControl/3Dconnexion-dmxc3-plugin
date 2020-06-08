@@ -9,22 +9,28 @@ using Lumos.GUI.Resource;
 using org.dmxc.lumos.Kernel.DeviceProperties;
 using Lumos.GUI.Connection;
 using Lumos.GUI.Facade.DeviceProperties;
-using LumosLIB.Kernel.Plugin;
+using Lumos.GUI.Input.v2;
 using LumosLIB.Kernel.Scene.Fanning;
 using org.dmxc.lumos.Kernel.PropertyType;
 using LumosLIB.Tools;
+using System.Collections.ObjectModel;
+using System.Drawing.Imaging;
+using System.IO;
+using ErrorEventArgs = LumosLIB.Kernel.Plugin.ErrorEventArgs;
 
 namespace Lumos3DconnexionPlugin
 {
     /// <summary>
     /// Plugin Class. Inhertited from GuiPluginBase
     /// </summary>
-    public class _3DxPlugin : Lumos.GUI.Plugin.GuiPluginBase
+    public class _3DxPlugin : Lumos.GUI.Plugin.GuiPluginBase, IResourceProvider
     {
         /// <summary>
         /// Every Plugin needs a unique ID
         /// </summary>
         const string PLUGIN_ID = "{6C1AC89E-BBED-4D76-9D63-54FEFA74BF15}";
+
+        public const string PLUGIN_NAME = "3Dconnexion";
 
         private static readonly ILumosLog log = LumosLogger.getInstance<_3DxPlugin>();
         private static readonly LumosResourceMetadata SETTINGS_FILE = new LumosResourceMetadata("_3DxPluginSettings.xml", ELumosResourceType.MANAGED_TREE);
@@ -32,9 +38,15 @@ namespace Lumos3DconnexionPlugin
         private _3DxForm _form;
         private int exceptionCounter;
 
+        private readonly Dictionary<E3DxAchsis, _3DxInputSource> _inputSources = Enum.GetValues(typeof(E3DxAchsis))
+            .Cast<E3DxAchsis>().Select(c => new _3DxInputSource(c)).ToDictionary(c => c.Axis);
+
         public _3DxPlugin() 
-            : base(PLUGIN_ID, "3Dconnexion Plugin") 
+            : base(PLUGIN_ID, PLUGIN_NAME + " Plugin") 
         { 
+
+
+
         }
 
         /// <summary>
@@ -46,6 +58,8 @@ namespace Lumos3DconnexionPlugin
             this._form.DeviceMotion += _form_DeviceMotion;
             this._form.PluginError += _form_PluginError;
             this.loadSettings();
+
+            ResourceManager.getInstance().registerResourceProvider(this);
         }
 
         /// <summary>
@@ -60,8 +74,7 @@ namespace Lumos3DconnexionPlugin
                 this._form.PluginEnabled = false;
                 this._form.Hide();
             }
-
-            ClearAllFacades();
+            InputManager.getInstance().UnregisterSources(_inputSources.Values);
         }
 
         /// <summary>
@@ -72,6 +85,8 @@ namespace Lumos3DconnexionPlugin
             WindowManager.getInstance().AddWindow(this._form);
             this._form.PluginEnabled = true;
             this.exceptionCounter = 0;
+
+            InputManager.getInstance().RegisterSources(_inputSources.Values);
         }
 
         /// <summary>
@@ -80,7 +95,6 @@ namespace Lumos3DconnexionPlugin
         public override void connectionEstablished()
         {
             base.connectionEstablished();
-            ConnectionManager.getInstance().GuiSession.SelectedDeviceGroupChanged += onSelectedDeviceGroupChanged;
         }
 
         /// <summary>
@@ -89,12 +103,6 @@ namespace Lumos3DconnexionPlugin
         public override void connectionClosing()
         {
             base.connectionClosing();
-
-            ClearAllFacades();
-
-            var s = ConnectionManager.getInstance().GuiSession;
-            if (s != null)
-                s.SelectedDeviceGroupChanged -= onSelectedDeviceGroupChanged;
         }
 
         private void loadSettings()
@@ -112,11 +120,6 @@ namespace Lumos3DconnexionPlugin
                             this._form.SetAxisDeadzone(a, r.ManagedData.getValue<int>(a.ToString() + "-Deadzone"));
                         else
                             this._form.SetAxisDeadzone(a, 0);
-
-                        if (r.ManagedData.hasValue<EPropertyType>(a.ToString() + "-Property"))
-                            this._form.SetMappedProperty(a, r.ManagedData.getValue<EPropertyType>(a.ToString() + "-Property"));
-                        else
-                            this._form.SetMappedProperty(a, null);
                     }
                 }
             }
@@ -131,9 +134,6 @@ namespace Lumos3DconnexionPlugin
             {
                 int dz = this._form.GetAxisDeadzone(a);
                 i.setValue(a.ToString() + "-Deadzone", dz);
-                var pt = this._form.GetMappedProperty(a);
-                if (pt != null)
-                    i.setValue(a.ToString() + "-Property", pt.Value);
             }
             LumosResource r = new LumosResource(SETTINGS_FILE.Name, i);
             ResourceManager.getInstance().saveResource(EResourceType.APPLICATION, r);
@@ -161,193 +161,64 @@ namespace Lumos3DconnexionPlugin
 
         #region Dispatch 3Dx Value to Lumos
 
-        private readonly IncrementSupport _goboIncrement = new IncrementSupport(10000) { ResetOnDirectionChange = true },
-            _shutterIncrement = new IncrementSupport(10000) { ResetOnDirectionChange = true };
-
-        private IDevicePropertyFacade _goboFacade, _colorFacade, _positionFacade, _zoomFacade, _dimmerFacade, _shutterFacade;
-        private Position _positionLB, _positionHB;
-        private double _intensityLB, _intensityHB;
-        private double _zoomLB, _zoomHB;
-        private readonly List<Gobo> _goboGobos = new List<Gobo>();
-
-        private void ClearAllFacades()
-        {
-            _goboFacade = _colorFacade = _positionFacade = _zoomFacade = _dimmerFacade = _shutterFacade = null;
-            _goboIncrement.Reset();
-            _shutterIncrement.Reset();
-        }
-
-        private void onSelectedDeviceGroupChanged(Object sender, EventArgs e)
-        {
-            if (!Enabled) return;
-            if (!ConnectionManager.getInstance().Connected) return;
-
-            var s = ConnectionManager.getInstance().GuiSession;
-            var deviceGroup = s.SelectedDeviceGroup;
-
-            ClearAllFacades();
-
-            if (deviceGroup != null)
-            {
-                foreach (var prop in deviceGroup.GUIProperties)
-                {
-                    switch (prop.PropertyType)
-                    {
-                        case EPropertyType.Dimmer: 
-                            _dimmerFacade = prop;
-                            _intensityLB = (double)prop.LowerBound;
-                            _intensityHB = (double)prop.UpperBound;
-                            break;
-                        case EPropertyType.Zoom: 
-                            _zoomFacade = prop;
-                            _zoomLB = (double)prop.LowerBound;
-                            _zoomHB = (double)prop.UpperBound;
-                            break;
-                        case EPropertyType.Position: 
-                            _positionFacade = prop; 
-                            _positionLB = (Position)prop.LowerBound;
-                            _positionHB = (Position)prop.UpperBound; 
-                            break;
-                        case EPropertyType.Color: _colorFacade = prop; break;
-                        case EPropertyType.Gobo: 
-                            _goboFacade = prop;
-                            _goboGobos.Clear();
-                            _goboGobos.AddRange(prop.EnumValues.Select(c => GoboTools.ToGobo(c)));
-                            break;
-                        case EPropertyType.Shutter: _shutterFacade = prop; break;
-                    }
-                }
-            }
-        }
+        
 
         private void _form_DeviceMotion(object sender, _3DxMotionEventArgs e)
         {
-            int pan = 0, tilt = 0;
             foreach (var kvp in e.AxisValues)
             {
-                switch (kvp.Key)
-                {
-                    case EPropertyType.Gobo: SetGoboValue(kvp.Value); break;
-                    case EPropertyType.Color: SetColorValue(kvp.Value); break;
-                    case EPropertyType.Dimmer: SetDimmerValue(kvp.Value); break;
-                    case EPropertyType.Pan: pan = kvp.Value; break;
-                    case EPropertyType.Tilt: tilt = kvp.Value; break;
-                    case EPropertyType.Zoom: SetZoomValue(kvp.Value); break;
-                }
+                var p = _inputSources.TryGetWithDefault(kvp.Key);
+                p?.SetValue(kvp.Value);
             }
-            if (pan != 0 || tilt != 0)
-                SetPanTiltValue(pan, tilt);
         }
 
-        private void SetGoboValue(int value)
+        public bool existsResource(EResourceDataType type, string name)
         {
-            if (_goboFacade == null) return;
-            if (_goboGobos.Count == 0) return;
-
-            if (_goboIncrement.Increment(value))
+            if (type == EResourceDataType.ICON || type == EResourceDataType.PICTURE || type == EResourceDataType.SYMBOL)
             {
-                var g = _goboFacade.ProgrammerValue as Gobo;
-                int oldIndex = -1;
-                if (g == null || (oldIndex = _goboGobos.IndexOf(g)) < 0)
+                if (name.Equals("3DxIcon") || name.Equals("3DxIcon_16") || name.Equals("3DxIcon_32"))
+                    return true;
+            }
+            return false;
+        }
+
+        public ReadOnlyCollection<LumosDataMetadata> allResources(EResourceDataType type)
+        {
+            if (type == EResourceDataType.ICON || type == EResourceDataType.PICTURE || type == EResourceDataType.SYMBOL)
+            {
+                List<LumosDataMetadata> ret = new List<LumosDataMetadata>()
                 {
-                    _goboFacade.ProgrammerValue = _goboGobos[0];
-                }
-                else
+                    new LumosDataMetadata("3DxIcon"),
+                    new LumosDataMetadata("3DxIcon_16"),
+                    new LumosDataMetadata("3DxIcon_32"),
+                };
+                return ret.AsReadOnly();
+            }
+
+            return null;
+        }
+
+        public byte[] loadResource(EResourceDataType type, string name)
+        {
+            if (type == EResourceDataType.ICON || type == EResourceDataType.PICTURE || type == EResourceDataType.SYMBOL)
+            {
+                using (var ms = new MemoryStream())
                 {
-                    if (value > 0)
-                        oldIndex = (oldIndex + 1) % _goboGobos.Count;
-                    else
+                    switch (name)
                     {
-                        oldIndex--;
-                        if (oldIndex < 0) oldIndex += _goboGobos.Count;
+                        case "3DxIcon":
+                        case "3DxIcon_32":
+                            Properties.Resources._3DxIcon_32.Save(ms, ImageFormat.Png);
+                            return ms.ToArray();
+
+                        case "3DxIcon_16":
+                            Properties.Resources._3DxIcon_16.Save(ms, ImageFormat.Png);
+                            return ms.ToArray();
                     }
-                    _goboFacade.ProgrammerValue = _goboGobos[oldIndex];
                 }
             }
-        }
 
-        private void SetColorValue(int value)
-        {
-            if (_colorFacade == null) return;
-
-            ColorFannedValue v = _colorFacade.ProgrammerValue as ColorFannedValue;
-            if (v == null || v.Values.NullToEmpty().All(c => c.ColorsEqual(LumosColor.White)))
-                _colorFacade.ProgrammerValue = ColorFannedValue.FromLumosColor(LumosColor.FromColor(System.Drawing.Color.Red));
-            else
-            {
-                var c = v.rotate((double)value / 250);
-
-                _colorFacade.ProgrammerValue = c;
-            }
-        }
-
-        private void SetPanTiltValue(int panvalue, int tiltvalue)
-        {
-            if (_positionFacade == null) return;
-
-            PositionFannedValue v = _positionFacade.ProgrammerValue as PositionFannedValue;
-            if (v == null)
-                _positionFacade.ProgrammerValue = PositionFannedValue.FromPosition(new Position(0, 0));
-            else
-            {
-                var c = v.add((double)panvalue / 250, (double)tiltvalue / 250);
-                if (c.isInRange(_positionLB, _positionHB) == false)
-                    c = c.trimToRange(_positionLB, _positionHB);
-
-                _positionFacade.ProgrammerValue = c;
-            }
-        }
-
-        private void SetZoomValue(int value)
-        {
-            if (_zoomFacade == null) return;
-
-            NumericFannedValue v = _zoomFacade.ProgrammerValue as NumericFannedValue;
-            if (v == null)
-            {
-                _zoomFacade.ProgrammerValue = NumericFannedValue.FromInt(0);
-            }
-            else
-            {
-                var c = v.add((double)value / 100);
-                if (c.isInRange(_zoomLB, _zoomHB) == false)
-                    c = c.trimToRange(_zoomLB, _zoomHB);
-
-                _zoomFacade.ProgrammerValue = c;
-            }
-        }
-
-        private void SetDimmerValue(int value)
-        {
-            if (_dimmerFacade == null && _shutterFacade == null) return;
-
-            if (_dimmerFacade != null)
-            {
-                NumericFannedValue v = _dimmerFacade.ProgrammerValue as NumericFannedValue;
-                if (v == null)
-                {
-                    _dimmerFacade.ProgrammerValue = NumericFannedValue.FromInt(0);
-                    if(_shutterFacade != null)
-                        _shutterFacade.ProgrammerValue = false;
-                }
-                else
-                {
-                    var c = v.add((double)value / 500);
-                    if (c.isInRange(_intensityLB, _intensityHB) == false)
-                        c = c.trimToRange(_intensityLB, _intensityHB);
-
-                    _dimmerFacade.ProgrammerValue = c;
-                    if(_shutterFacade != null)
-                        _shutterFacade.ProgrammerValue = c.LB > 0 || c.HB > 0;
-                }
-            }
-            else if(_shutterFacade != null)
-            {
-                if (_shutterIncrement.Increment(value))
-                {
-                    _shutterFacade.ProgrammerValue = value > 0;
-                }
-            }
+            return null;
         }
 
         #endregion

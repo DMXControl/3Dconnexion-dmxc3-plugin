@@ -33,53 +33,37 @@ namespace Lumos3DconnexionPlugin
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox1 = new LumosGroupBox();
-            this.checkBoxLED = new LumosCheckBox();
-            this.labelError = new LumosLabel();
+            this.groupBox1 = new LumosControls.Controls.LumosGroupBox();
+            this.checkBoxLED = new LumosControls.Controls.LumosCheckBox();
+            this.labelError = new LumosControls.Controls.LumosLabel();
             this.pictureBoxDevice = new System.Windows.Forms.PictureBox();
-            this.labelFirmware = new LumosLabel();
-            this.labelDeviceName = new LumosLabel();
-            this.groupBox2 = new LumosGroupBox();
+            this.labelFirmware = new LumosControls.Controls.LumosLabel();
+            this.labelDeviceName = new LumosControls.Controls.LumosLabel();
+            this.groupBox2 = new LumosControls.Controls.LumosGroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelTx = new LumosLabel();
-            this.labelTy = new LumosLabel();
-            this.labelTz = new LumosLabel();
-            this.labelRx = new LumosLabel();
-            this.labelRy = new LumosLabel();
-            this.labelRz = new LumosLabel();
-            this.groupBox3 = new LumosGroupBox();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new LumosLabel();
-            this.label2 = new LumosLabel();
-            this.label3 = new LumosLabel();
-            this.label4 = new LumosLabel();
-            this.label5 = new LumosLabel();
-            this.label6 = new LumosLabel();
-            this.cbTx = new LumosComboBox();
-            this.cbTy = new LumosComboBox();
-            this.cbTz = new LumosComboBox();
-            this.cbRx = new LumosComboBox();
-            this.cbRy = new LumosComboBox();
-            this.cbRz = new LumosComboBox();
-            this.nudTx = new LumosNumericUpDown();
-            this.nudTy = new LumosNumericUpDown();
-            this.nudTz = new LumosNumericUpDown();
-            this.nudRx = new LumosNumericUpDown();
-            this.nudRy = new LumosNumericUpDown();
-            this.nudRz = new LumosNumericUpDown();
-            this.label7 = new LumosLabel();
-            this.label8 = new LumosLabel();
-            this.label9 = new LumosLabel();
-            this.label10 = new LumosLabel();
-            this.label11 = new LumosLabel();
-            this.label12 = new LumosLabel();
-            this.label13 = new LumosLabel();
+            this.labelTx = new LumosControls.Controls.LumosLabel();
+            this.labelTy = new LumosControls.Controls.LumosLabel();
+            this.labelTz = new LumosControls.Controls.LumosLabel();
+            this.labelRx = new LumosControls.Controls.LumosLabel();
+            this.labelRy = new LumosControls.Controls.LumosLabel();
+            this.labelRz = new LumosControls.Controls.LumosLabel();
+            this.nudTx = new LumosControls.Controls.LumosNumericUpDown();
+            this.nudTy = new LumosControls.Controls.LumosNumericUpDown();
+            this.nudTz = new LumosControls.Controls.LumosNumericUpDown();
+            this.nudRx = new LumosControls.Controls.LumosNumericUpDown();
+            this.nudRy = new LumosControls.Controls.LumosNumericUpDown();
+            this.nudRz = new LumosControls.Controls.LumosNumericUpDown();
+            this.label7 = new LumosControls.Controls.LumosLabel();
+            this.label8 = new LumosControls.Controls.LumosLabel();
+            this.label9 = new LumosControls.Controls.LumosLabel();
+            this.label10 = new LumosControls.Controls.LumosLabel();
+            this.label11 = new LumosControls.Controls.LumosLabel();
+            this.label12 = new LumosControls.Controls.LumosLabel();
+            this.label13 = new LumosControls.Controls.LumosLabel();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDevice)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTx)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTz)).BeginInit();
@@ -95,6 +79,7 @@ namespace Lumos3DconnexionPlugin
             this.groupBox1.Controls.Add(this.pictureBoxDevice);
             this.groupBox1.Controls.Add(this.labelFirmware);
             this.groupBox1.Controls.Add(this.labelDeviceName);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(278, 168);
@@ -107,9 +92,10 @@ namespace Lumos3DconnexionPlugin
             this.checkBoxLED.AutoSize = true;
             this.checkBoxLED.Checked = true;
             this.checkBoxLED.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxLED.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.checkBoxLED.Location = new System.Drawing.Point(10, 65);
             this.checkBoxLED.Name = "checkBoxLED";
-            this.checkBoxLED.Size = new System.Drawing.Size(89, 17);
+            this.checkBoxLED.Size = new System.Drawing.Size(107, 20);
             this.checkBoxLED.TabIndex = 4;
             this.checkBoxLED.Text = "LED Enabled";
             this.checkBoxLED.UseVisualStyleBackColor = true;
@@ -118,9 +104,10 @@ namespace Lumos3DconnexionPlugin
             // labelError
             // 
             this.labelError.AutoSize = true;
+            this.labelError.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelError.Location = new System.Drawing.Point(7, 143);
             this.labelError.Name = "labelError";
-            this.labelError.Size = new System.Drawing.Size(51, 13);
+            this.labelError.Size = new System.Drawing.Size(62, 16);
             this.labelError.TabIndex = 3;
             this.labelError.Text = "labelError";
             this.labelError.Visible = false;
@@ -137,24 +124,27 @@ namespace Lumos3DconnexionPlugin
             // labelFirmware
             // 
             this.labelFirmware.AutoSize = true;
+            this.labelFirmware.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelFirmware.Location = new System.Drawing.Point(7, 37);
             this.labelFirmware.Name = "labelFirmware";
-            this.labelFirmware.Size = new System.Drawing.Size(71, 13);
+            this.labelFirmware.Size = new System.Drawing.Size(88, 16);
             this.labelFirmware.TabIndex = 1;
             this.labelFirmware.Text = "labelFirmware";
             // 
             // labelDeviceName
             // 
             this.labelDeviceName.AutoSize = true;
+            this.labelDeviceName.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelDeviceName.Location = new System.Drawing.Point(7, 20);
             this.labelDeviceName.Name = "labelDeviceName";
-            this.labelDeviceName.Size = new System.Drawing.Size(91, 13);
+            this.labelDeviceName.Size = new System.Drawing.Size(109, 16);
             this.labelDeviceName.TabIndex = 0;
             this.labelDeviceName.Text = "labelDeviceName";
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.tableLayoutPanel1);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(12, 186);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(278, 197);
@@ -205,9 +195,10 @@ namespace Lumos3DconnexionPlugin
             // 
             this.labelTx.AutoSize = true;
             this.labelTx.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelTx.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelTx.Location = new System.Drawing.Point(3, 20);
             this.labelTx.Name = "labelTx";
-            this.labelTx.Size = new System.Drawing.Size(82, 25);
+            this.labelTx.Size = new System.Drawing.Size(85, 25);
             this.labelTx.TabIndex = 0;
             this.labelTx.Text = "TX:";
             this.labelTx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -216,9 +207,10 @@ namespace Lumos3DconnexionPlugin
             // 
             this.labelTy.AutoSize = true;
             this.labelTy.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelTy.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelTy.Location = new System.Drawing.Point(3, 45);
             this.labelTy.Name = "labelTy";
-            this.labelTy.Size = new System.Drawing.Size(82, 25);
+            this.labelTy.Size = new System.Drawing.Size(85, 25);
             this.labelTy.TabIndex = 1;
             this.labelTy.Text = "TY:";
             this.labelTy.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -227,9 +219,10 @@ namespace Lumos3DconnexionPlugin
             // 
             this.labelTz.AutoSize = true;
             this.labelTz.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelTz.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelTz.Location = new System.Drawing.Point(3, 70);
             this.labelTz.Name = "labelTz";
-            this.labelTz.Size = new System.Drawing.Size(82, 25);
+            this.labelTz.Size = new System.Drawing.Size(85, 25);
             this.labelTz.TabIndex = 2;
             this.labelTz.Text = "TZ:";
             this.labelTz.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -238,9 +231,10 @@ namespace Lumos3DconnexionPlugin
             // 
             this.labelRx.AutoSize = true;
             this.labelRx.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelRx.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelRx.Location = new System.Drawing.Point(3, 95);
             this.labelRx.Name = "labelRx";
-            this.labelRx.Size = new System.Drawing.Size(82, 25);
+            this.labelRx.Size = new System.Drawing.Size(85, 25);
             this.labelRx.TabIndex = 3;
             this.labelRx.Text = "RX:";
             this.labelRx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -249,9 +243,10 @@ namespace Lumos3DconnexionPlugin
             // 
             this.labelRy.AutoSize = true;
             this.labelRy.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelRy.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelRy.Location = new System.Drawing.Point(3, 120);
             this.labelRy.Name = "labelRy";
-            this.labelRy.Size = new System.Drawing.Size(82, 25);
+            this.labelRy.Size = new System.Drawing.Size(85, 25);
             this.labelRy.TabIndex = 4;
             this.labelRy.Text = "RY:";
             this.labelRy.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -260,269 +255,214 @@ namespace Lumos3DconnexionPlugin
             // 
             this.labelRz.AutoSize = true;
             this.labelRz.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelRz.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelRz.Location = new System.Drawing.Point(3, 145);
             this.labelRz.Name = "labelRz";
-            this.labelRz.Size = new System.Drawing.Size(82, 27);
+            this.labelRz.Size = new System.Drawing.Size(85, 27);
             this.labelRz.TabIndex = 5;
             this.labelRz.Text = "RZ:";
             this.labelRz.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.tableLayoutPanel2);
-            this.groupBox3.Location = new System.Drawing.Point(306, 12);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(329, 371);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Mapping";
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 89F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.label3, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.label4, 0, 3);
-            this.tableLayoutPanel2.Controls.Add(this.label5, 0, 4);
-            this.tableLayoutPanel2.Controls.Add(this.label6, 0, 5);
-            this.tableLayoutPanel2.Controls.Add(this.cbTx, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.cbTy, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.cbTz, 1, 2);
-            this.tableLayoutPanel2.Controls.Add(this.cbRx, 1, 3);
-            this.tableLayoutPanel2.Controls.Add(this.cbRy, 1, 4);
-            this.tableLayoutPanel2.Controls.Add(this.cbRz, 1, 5);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 19);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 6;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(302, 167);
-            this.tableLayoutPanel2.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 27);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "TX:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(3, 27);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(83, 27);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "TY:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Location = new System.Drawing.Point(3, 54);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(83, 27);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "TZ:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.Location = new System.Drawing.Point(3, 81);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(83, 27);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "RX:";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.Location = new System.Drawing.Point(3, 108);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(83, 27);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "RY:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label6.Location = new System.Drawing.Point(3, 135);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(83, 32);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "RZ:";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // cbTx
-            // 
-            this.cbTx.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbTx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTx.FormattingEnabled = true;
-            this.cbTx.Location = new System.Drawing.Point(92, 3);
-            this.cbTx.Name = "cbTx";
-            this.cbTx.Size = new System.Drawing.Size(207, 21);
-            this.cbTx.TabIndex = 6;
-            this.cbTx.SelectedIndexChanged += new System.EventHandler(this.cb_SelectedIndexChanged);
-            // 
-            // cbTy
-            // 
-            this.cbTy.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbTy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTy.FormattingEnabled = true;
-            this.cbTy.Location = new System.Drawing.Point(92, 30);
-            this.cbTy.Name = "cbTy";
-            this.cbTy.Size = new System.Drawing.Size(207, 21);
-            this.cbTy.TabIndex = 7;
-            this.cbTy.SelectedIndexChanged += new System.EventHandler(this.cb_SelectedIndexChanged);
-            // 
-            // cbTz
-            // 
-            this.cbTz.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbTz.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTz.FormattingEnabled = true;
-            this.cbTz.Location = new System.Drawing.Point(92, 57);
-            this.cbTz.Name = "cbTz";
-            this.cbTz.Size = new System.Drawing.Size(207, 21);
-            this.cbTz.TabIndex = 8;
-            this.cbTz.SelectedIndexChanged += new System.EventHandler(this.cb_SelectedIndexChanged);
-            // 
-            // cbRx
-            // 
-            this.cbRx.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbRx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRx.FormattingEnabled = true;
-            this.cbRx.Location = new System.Drawing.Point(92, 84);
-            this.cbRx.Name = "cbRx";
-            this.cbRx.Size = new System.Drawing.Size(207, 21);
-            this.cbRx.TabIndex = 9;
-            this.cbRx.SelectedIndexChanged += new System.EventHandler(this.cb_SelectedIndexChanged);
-            // 
-            // cbRy
-            // 
-            this.cbRy.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbRy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRy.FormattingEnabled = true;
-            this.cbRy.Location = new System.Drawing.Point(92, 111);
-            this.cbRy.Name = "cbRy";
-            this.cbRy.Size = new System.Drawing.Size(207, 21);
-            this.cbRy.TabIndex = 10;
-            this.cbRy.SelectedIndexChanged += new System.EventHandler(this.cb_SelectedIndexChanged);
-            // 
-            // cbRz
-            // 
-            this.cbRz.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbRz.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRz.FormattingEnabled = true;
-            this.cbRz.Location = new System.Drawing.Point(92, 138);
-            this.cbRz.Name = "cbRz";
-            this.cbRz.Size = new System.Drawing.Size(207, 21);
-            this.cbRz.TabIndex = 11;
-            this.cbRz.SelectedIndexChanged += new System.EventHandler(this.cb_SelectedIndexChanged);
-            // 
             // nudTx
             // 
+            this.nudTx.DecimalPlaces = 0;
             this.nudTx.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nudTx.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.nudTx.Hexadecimal = false;
+            this.nudTx.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudTx.Location = new System.Drawing.Point(179, 23);
             this.nudTx.Maximum = new decimal(new int[] {
             5000,
             0,
             0,
             0});
+            this.nudTx.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.nudTx.Name = "nudTx";
             this.nudTx.Size = new System.Drawing.Size(84, 20);
             this.nudTx.TabIndex = 6;
+            this.nudTx.Text = "0";
+            this.nudTx.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             // 
             // nudTy
             // 
+            this.nudTy.DecimalPlaces = 0;
             this.nudTy.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nudTy.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.nudTy.Hexadecimal = false;
+            this.nudTy.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudTy.Location = new System.Drawing.Point(179, 48);
             this.nudTy.Maximum = new decimal(new int[] {
             5000,
             0,
             0,
             0});
+            this.nudTy.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.nudTy.Name = "nudTy";
             this.nudTy.Size = new System.Drawing.Size(84, 20);
             this.nudTy.TabIndex = 7;
+            this.nudTy.Text = "0";
+            this.nudTy.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             // 
             // nudTz
             // 
+            this.nudTz.DecimalPlaces = 0;
             this.nudTz.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nudTz.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.nudTz.Hexadecimal = false;
+            this.nudTz.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudTz.Location = new System.Drawing.Point(179, 73);
             this.nudTz.Maximum = new decimal(new int[] {
             5000,
             0,
             0,
             0});
+            this.nudTz.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.nudTz.Name = "nudTz";
             this.nudTz.Size = new System.Drawing.Size(84, 20);
             this.nudTz.TabIndex = 8;
+            this.nudTz.Text = "0";
+            this.nudTz.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             // 
             // nudRx
             // 
+            this.nudRx.DecimalPlaces = 0;
             this.nudRx.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nudRx.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.nudRx.Hexadecimal = false;
+            this.nudRx.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudRx.Location = new System.Drawing.Point(179, 98);
             this.nudRx.Maximum = new decimal(new int[] {
             5000,
             0,
             0,
             0});
+            this.nudRx.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.nudRx.Name = "nudRx";
             this.nudRx.Size = new System.Drawing.Size(84, 20);
             this.nudRx.TabIndex = 9;
+            this.nudRx.Text = "0";
+            this.nudRx.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             // 
             // nudRy
             // 
+            this.nudRy.DecimalPlaces = 0;
             this.nudRy.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nudRy.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.nudRy.Hexadecimal = false;
+            this.nudRy.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudRy.Location = new System.Drawing.Point(179, 123);
             this.nudRy.Maximum = new decimal(new int[] {
             5000,
             0,
             0,
             0});
+            this.nudRy.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.nudRy.Name = "nudRy";
             this.nudRy.Size = new System.Drawing.Size(84, 20);
             this.nudRy.TabIndex = 10;
+            this.nudRy.Text = "0";
+            this.nudRy.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             // 
             // nudRz
             // 
+            this.nudRz.DecimalPlaces = 0;
             this.nudRz.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nudRz.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.nudRz.Hexadecimal = false;
+            this.nudRz.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudRz.Location = new System.Drawing.Point(179, 148);
             this.nudRz.Maximum = new decimal(new int[] {
             5000,
             0,
             0,
             0});
+            this.nudRz.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.nudRz.Name = "nudRz";
             this.nudRz.Size = new System.Drawing.Size(84, 20);
             this.nudRz.TabIndex = 11;
+            this.nudRz.Text = "0";
+            this.nudRz.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(91, 20);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(82, 25);
+            this.label7.Size = new System.Drawing.Size(85, 25);
             this.label7.TabIndex = 12;
             this.label7.Text = "+/-";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -531,9 +471,10 @@ namespace Lumos3DconnexionPlugin
             // 
             this.label8.AutoSize = true;
             this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label8.Location = new System.Drawing.Point(91, 45);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(82, 25);
+            this.label8.Size = new System.Drawing.Size(85, 25);
             this.label8.TabIndex = 13;
             this.label8.Text = "+/-";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -542,9 +483,10 @@ namespace Lumos3DconnexionPlugin
             // 
             this.label9.AutoSize = true;
             this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(91, 70);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(82, 25);
+            this.label9.Size = new System.Drawing.Size(85, 25);
             this.label9.TabIndex = 14;
             this.label9.Text = "+/-";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -553,9 +495,10 @@ namespace Lumos3DconnexionPlugin
             // 
             this.label10.AutoSize = true;
             this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label10.Location = new System.Drawing.Point(91, 95);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(82, 25);
+            this.label10.Size = new System.Drawing.Size(85, 25);
             this.label10.TabIndex = 15;
             this.label10.Text = "+/-";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -564,9 +507,10 @@ namespace Lumos3DconnexionPlugin
             // 
             this.label11.AutoSize = true;
             this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label11.Location = new System.Drawing.Point(91, 120);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(82, 25);
+            this.label11.Size = new System.Drawing.Size(85, 25);
             this.label11.TabIndex = 16;
             this.label11.Text = "+/-";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -575,9 +519,10 @@ namespace Lumos3DconnexionPlugin
             // 
             this.label12.AutoSize = true;
             this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label12.Location = new System.Drawing.Point(91, 145);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(82, 27);
+            this.label12.Size = new System.Drawing.Size(85, 27);
             this.label12.TabIndex = 17;
             this.label12.Text = "+/-";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -586,9 +531,10 @@ namespace Lumos3DconnexionPlugin
             // 
             this.label13.AutoSize = true;
             this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label13.Location = new System.Drawing.Point(179, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(84, 20);
+            this.label13.Size = new System.Drawing.Size(87, 20);
             this.label13.TabIndex = 18;
             this.label13.Text = "Deadzone";
             this.label13.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -597,11 +543,10 @@ namespace Lumos3DconnexionPlugin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(655, 417);
-            this.Controls.Add(this.groupBox3);
+            this.ClientSize = new System.Drawing.Size(305, 417);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.Location = new System.Drawing.Point(0, 0);
             this.MainFormMenu = LumosLIB.GUI.Windows.MenuType.Settings;
             this.Name = "_3DxForm";
@@ -613,9 +558,6 @@ namespace Lumos3DconnexionPlugin
             this.groupBox2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTx)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTy)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTz)).EndInit();
@@ -641,21 +583,7 @@ namespace Lumos3DconnexionPlugin
         private LumosLabel labelRx;
         private LumosLabel labelRy;
         private LumosLabel labelRz;
-        private LumosGroupBox groupBox3;
         private LumosCheckBox checkBoxLED;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Label label1;
-        private LumosLabel label2;
-        private LumosLabel label3;
-        private LumosLabel label4;
-        private LumosLabel label5;
-        private LumosLabel label6;
-        private LumosComboBox cbTx;
-        private LumosComboBox cbTy;
-        private LumosComboBox cbTz;
-        private LumosComboBox cbRx;
-        private LumosComboBox cbRy;
-        private LumosComboBox cbRz;
         private LumosNumericUpDown nudTx;
         private LumosNumericUpDown nudTy;
         private LumosNumericUpDown nudTz;
