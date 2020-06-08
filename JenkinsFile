@@ -21,8 +21,11 @@ pipeline {
 		ReportGenerator = tool 'ReportGenerator_current'
 	}
 	triggers {
-		//  Trigger for gitea pushes with the branch as token
-		cron('H/30 * * * *')
+		//  Trigger, when Lumos build was successful
+		upstream ( 
+		   threshold: hudson.model.Result.SUCCESS, 
+		   upstreamProjects: "/Lumos (Pipeline)/" + env.BRANCH_NAME.replaceAll("/", "%2F") 
+		)
 	}
 	stages{
 		stage('Copy Artefacts of other Jobs'){
