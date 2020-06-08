@@ -15,28 +15,17 @@ namespace Lumos3DconnexionPlugin
 {
     public partial class _3DxForm : ToolWindow
     {
-        private static readonly EPropertyType[] CONTROLED_PROPERTIES = 
-            {
-                EPropertyType.Dimmer,
-                EPropertyType.Pan,
-                EPropertyType.Tilt,
-                EPropertyType.Gobo,
-                EPropertyType.Color,
-                EPropertyType.Zoom,
-            };
-
         private const string DISABLED_STRING = "Disabled";
         private const int NUD_MAX = 5000;
 
         private readonly _3DconnexionDriver._3DconnexionDevice _device;
 
+        private int deviceId;
         private readonly System.Windows.Forms.Timer _3dxDeviceTimer = new System.Windows.Forms.Timer();
         private readonly System.Windows.Forms.Timer _eventTimer = new System.Windows.Forms.Timer();
 
         private int Tx, Ty, Tz, Rx, Ry, Rz;
-
-        private readonly List<ComboBox> _comboBoxes = new List<ComboBox>();
-        private readonly bool initDone = false;
+        private bool changeFlag;
 
         private readonly ILumosLog _exceptionLog;
 
@@ -47,6 +36,10 @@ namespace Lumos3DconnexionPlugin
         {
             InitializeComponent();
 
+            this.TabText = this.Text = _3DxPlugin.PLUGIN_NAME;
+            this.MenuIconKey = "3DxIcon";
+            this.Icon = Properties.Resources._3DxIcon_16.ImageToIcon();
+
             _exceptionLog = new SingleExceptionDecorator(log)
             {
                 ReLogCount = 10
@@ -56,7 +49,6 @@ namespace Lumos3DconnexionPlugin
 
             _device.Motion += new EventHandler<_3DconnexionDriver.MotionEventArgs>(_device_Motion);
             _device.ZeroPoint += new EventHandler(_device_ZeroPoint);
-            //_device.DeviceChange += new EventHandler<_3DconnexionDriver.DeviceChangeEventArgs>(_device_DeviceChange);
 
             _3dxDeviceTimer.Interval = 2000;
             _3dxDeviceTimer.Tick += new EventHandler(_3dxDeviceTimer_Tick);
@@ -64,34 +56,12 @@ namespace Lumos3DconnexionPlugin
             _eventTimer.Interval = 100;
             _eventTimer.Tick += new EventHandler(_eventTimer_Tick);
 
-            _comboBoxes.Add(cbTx);
-            _comboBoxes.Add(cbTy);
-            _comboBoxes.Add(cbTz);
-            _comboBoxes.Add(cbRx);
-            _comboBoxes.Add(cbRy);
-            _comboBoxes.Add(cbRz);
-
-            foreach (var cb in _comboBoxes)
-            {
-                cb.Items.Clear();
-                cb.Items.Add(DISABLED_STRING);
-                cb.Items.AddRange(CONTROLED_PROPERTIES.Cast<object>().ToArray());
-                cb.SelectedIndex = 0;
-            }
-
             nudTx.Minimum = nudTy.Minimum = nudTz.Minimum =
                 nudRx.Minimum = nudRy.Minimum = nudRz.Minimum = 0;
 
             nudTx.Maximum = nudTy.Maximum = nudTz.Maximum =
                 nudRx.Maximum = nudRy.Maximum = nudRz.Maximum = NUD_MAX;
-
-            initDone = true;
         }
-
-        //void _device_DeviceChange(object sender, _3DconnexionDriver.DeviceChangeEventArgs e)
-        //{
-        //    log.Debug("Device Changed: {0}, {1}", e.DeviceID, e.Type);
-        //}
 
         private void DisposeStuff()
         {
@@ -101,20 +71,19 @@ namespace Lumos3DconnexionPlugin
 
         private void _eventTimer_Tick(object sender, EventArgs e)
         {
+            if (!changeFlag) return;
+
             _3DxMotionEventArgs args = new _3DxMotionEventArgs();
             foreach(E3DxAchsis a in Enum.GetValues(typeof(E3DxAchsis)))
             {
-                var c = GetMappedProperty(a);
-                if(c != null)
-                {
-                    int erg = CalcValue(GetAxisValue(a), GetAxisDeadzone(a));
-                    if (erg != 0)
-                        args.AxisValues[c.Value] = erg;
-                }
+                int erg = CalcValue(GetAxisValue(a), GetAxisDeadzone(a));
+                args.AxisValues[a] = erg;
             }
 
             if (args.AxisValues.Count > 0)
                 OnDeviceMotion(args);
+
+            changeFlag = false;
         }
 
         private int CalcValue(int axis, int deadzone)
@@ -155,36 +124,7 @@ namespace Lumos3DconnexionPlugin
             Ry = e.RY;
             Rz = e.RZ;
             UpdateMotionLables();
-        }
-
-        public EPropertyType? GetMappedProperty(E3DxAchsis axis)
-        {
-            switch(axis)
-            {
-                case E3DxAchsis.TX: return cbTx.SelectedItem as EPropertyType?;
-                case E3DxAchsis.TY: return cbTy.SelectedItem as EPropertyType?;
-                case E3DxAchsis.TZ: return cbTz.SelectedItem as EPropertyType?;
-                case E3DxAchsis.RX: return cbRx.SelectedItem as EPropertyType?;
-                case E3DxAchsis.RY: return cbRy.SelectedItem as EPropertyType?;
-                case E3DxAchsis.RZ: return cbRz.SelectedItem as EPropertyType?;
-            }
-            return null;
-        }
-
-        public bool SetMappedProperty(E3DxAchsis axis, EPropertyType? type)
-        {
-            if (type != null && !CONTROLED_PROPERTIES.Contains((EPropertyType)type))
-                return false; //If it is not one of the propertys we control
-            switch (axis)
-            {
-                case E3DxAchsis.TX: cbTx.SelectedItem = type.HasValue ? (object)type.Value : DISABLED_STRING; return true;
-                case E3DxAchsis.TY: cbTy.SelectedItem = type.HasValue ? (object)type.Value : DISABLED_STRING; return true;
-                case E3DxAchsis.TZ: cbTz.SelectedItem = type.HasValue ? (object)type.Value : DISABLED_STRING; return true;
-                case E3DxAchsis.RX: cbRx.SelectedItem = type.HasValue ? (object)type.Value : DISABLED_STRING; return true;
-                case E3DxAchsis.RY: cbRy.SelectedItem = type.HasValue ? (object)type.Value : DISABLED_STRING; return true;
-                case E3DxAchsis.RZ: cbRz.SelectedItem = type.HasValue ? (object)type.Value : DISABLED_STRING; return true;
-            }
-            return false;
+            changeFlag = true;
         }
 
         public int GetAxisValue(E3DxAchsis axis)
@@ -219,6 +159,12 @@ namespace Lumos3DconnexionPlugin
         {
             if (zone < 0 || zone > NUD_MAX)
                 return false;
+
+            if (this.InvokeRequired)
+            {
+                return (bool) this.Invoke(new Func<E3DxAchsis, int, bool>(SetAxisDeadzone), axis, zone);
+            }
+
             switch (axis)
             {
                 case E3DxAchsis.TX: nudTx.Value = zone; return true;
@@ -252,6 +198,9 @@ namespace Lumos3DconnexionPlugin
         {
             if (!_device.IsAvailable)
                 Init();
+            //Detect Change
+            else if(_device.DeviceID != this.deviceId)
+                Init();
         }
 
         private void Init()
@@ -266,6 +215,7 @@ namespace Lumos3DconnexionPlugin
                     _device.InitDevice(Lumos.GUI.WindowManager.getInstance().MainFormWindow.Handle);
                     this.labelDeviceName.Text = _device.DeviceName;
                     this.labelFirmware.Text = _device.FirmwareVersion;
+                    this.deviceId = _device.DeviceID;
                     string path = _device.IconPath;
                     if (!String.IsNullOrEmpty(path) && System.IO.File.Exists(path))
                     {
@@ -339,45 +289,6 @@ namespace Lumos3DconnexionPlugin
             else
                 _device.LEDs = 0; //All LEDs off
             log.Debug("Set LED to {0}", _device.LEDs);
-        }
-
-        private void cb_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!initDone) return;
-
-            foreach (var cb in _comboBoxes)
-                cb.SelectedIndexChanged -= cb_SelectedIndexChanged;
-
-            var used = _comboBoxes.Select(c => c.SelectedItem).OfType<EPropertyType>().ToHashSet();
-            var available = CONTROLED_PROPERTIES.Except(used);
-
-            foreach (var cb in _comboBoxes)
-            {
-                if (Object.Equals(cb.SelectedItem, DISABLED_STRING))
-                {
-                    cb.Items.Clear();
-                    cb.Items.Add(DISABLED_STRING);
-                    cb.Items.AddRange(available.Cast<object>().ToArray());
-                    cb.SelectedIndex = 0;
-                }
-                else
-                {
-                    EPropertyType selected = (EPropertyType)cb.SelectedItem;
-                    cb.Items.Clear();
-                    cb.Items.Add(DISABLED_STRING);
-                    foreach (EPropertyType c in CONTROLED_PROPERTIES)
-                    {
-                        if (selected == c)
-                            cb.Items.Add(c);
-                        else if (!used.Contains(c))
-                            cb.Items.Add(c);
-                    }
-                    cb.SelectedItem = selected;
-                }
-            }
-
-            foreach (var cb in _comboBoxes)
-                cb.SelectedIndexChanged += cb_SelectedIndexChanged;
         }
 
         internal virtual void OnDeviceMotion(_3DxMotionEventArgs args)
