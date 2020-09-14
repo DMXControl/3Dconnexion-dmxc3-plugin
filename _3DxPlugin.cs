@@ -174,7 +174,7 @@ namespace Lumos3DconnexionPlugin
 
         public bool existsResource(EResourceDataType type, string name)
         {
-            if (type == EResourceDataType.ICON || type == EResourceDataType.PICTURE || type == EResourceDataType.SYMBOL)
+            if (type == EResourceDataType.SYMBOL)
             {
                 if (name.Equals("3DxIcon") || name.Equals("3DxIcon_16") || name.Equals("3DxIcon_32"))
                     return true;
@@ -184,7 +184,7 @@ namespace Lumos3DconnexionPlugin
 
         public ReadOnlyCollection<LumosDataMetadata> allResources(EResourceDataType type)
         {
-            if (type == EResourceDataType.ICON || type == EResourceDataType.PICTURE || type == EResourceDataType.SYMBOL)
+            if (type == EResourceDataType.SYMBOL)
             {
                 List<LumosDataMetadata> ret = new List<LumosDataMetadata>()
                 {
@@ -200,7 +200,7 @@ namespace Lumos3DconnexionPlugin
 
         public byte[] loadResource(EResourceDataType type, string name)
         {
-            if (type == EResourceDataType.ICON || type == EResourceDataType.PICTURE || type == EResourceDataType.SYMBOL)
+            if (type == EResourceDataType.SYMBOL)
             {
                 using (var ms = new MemoryStream())
                 {
