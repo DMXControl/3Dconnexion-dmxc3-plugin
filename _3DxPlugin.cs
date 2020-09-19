@@ -202,19 +202,14 @@ namespace Lumos3DconnexionPlugin
         {
             if (type == EResourceDataType.SYMBOL)
             {
-                using (var ms = new MemoryStream())
+                switch (name)
                 {
-                    switch (name)
-                    {
-                        case "3DxIcon":
-                        case "3DxIcon_32":
-                            Properties.Resources._3DxIcon_32.Save(ms, ImageFormat.Png);
-                            return ms.ToArray();
+                    case "3DxIcon":
+                    case "3DxIcon_32":
+                        return (byte[]) Properties.Resources._3DxIcon_32_png.Clone();
 
-                        case "3DxIcon_16":
-                            Properties.Resources._3DxIcon_16.Save(ms, ImageFormat.Png);
-                            return ms.ToArray();
-                    }
+                    case "3DxIcon_16":
+                        return (byte[]) Properties.Resources._3DxIcon_16_png.Clone();
                 }
             }
 
