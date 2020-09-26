@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -38,7 +39,7 @@ namespace Lumos3DconnexionPlugin
 
             this.TabText = this.Text = _3DxPlugin.PLUGIN_NAME;
             this.MenuIconKey = "3DxIcon";
-            this.Icon = Properties.Resources._3DxIcon_16.ImageToIcon();
+            this.Icon = new Icon(new MemoryStream(Properties.Resources._3DxIcon_16_png));
 
             _exceptionLog = new SingleExceptionDecorator(log)
             {
