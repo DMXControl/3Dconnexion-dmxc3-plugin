@@ -39,7 +39,7 @@ namespace Lumos3DconnexionPlugin
 
             this.TabText = this.Text = _3DxPlugin.PLUGIN_NAME;
             this.MenuIconKey = "3DxIcon";
-            this.Icon = new Icon(new MemoryStream(Properties.Resources._3DxIcon_16_png));
+            this.Icon = Image.FromStream(Properties.Resources._3DxIcon_16_png.ToMS()).ImageToIcon();
 
             _exceptionLog = new SingleExceptionDecorator(log)
             {
