@@ -41,7 +41,7 @@ jobs:
 
       - name: Build Solution
         run: |
-          msbuild.exe ${{env.SolutionName}}.sln /p:platform="Any CPU" /p:configuration="Release" /p:PostBuildEvent=
+          msbuild.exe ${{env.SolutionName}}.sln /p:platform="x86" /p:configuration="Release" /p:PostBuildEvent=
           
       - name: Copy Artifacts
         run: |
