@@ -51,6 +51,12 @@ jobs:
           
       - name: Copy Artifacts
         run: |
+          If(Test-Path -Path dmxcplug.json) {
+            $dmxcplug = (Get-Content "dmxcplug.json" | ConvertFrom-Json)
+            $filter = Get-ChildItem "temp/" -Name
+            foreach($type in $dmxcplug.type) { New-Item -ItemType "directory" -Path "dist/${type}/${{env.PluginName}}" }
+            foreach($type in $dmxcplug.type) { Get-ChildItem "bin/Release" -Name | where {$filter -NotContains $_} | %{ Copy-Item -Path "bin/Release/${_}" -Destination "dist/${type}/${{env.PluginName}}/${_}"} }
+          }
           foreach ($folder in Get-ChildItem -Directory) {
             If(Test-Path -Path $folder/dmxcplug.json) {
               $dmxcplug = (Get-Content "${folder}/dmxcplug.json" | ConvertFrom-Json)
