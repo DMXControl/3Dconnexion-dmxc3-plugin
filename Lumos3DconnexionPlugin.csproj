@@ -38,9 +38,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="3DconnexionDriver, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>dep\3DconnexionDriver.dll</HintPath>
+    <Reference Include="3DconnexionDriver, Version=1.0.0.491, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\DMXControlProjects.3DconnexionDriver.1.0.0.491\lib\netstandard2.0\3DconnexionDriver.dll</HintPath>
     </Reference>
     <Reference Include="DMXLIB">
       <HintPath>dep\DMXLIB.dll</HintPath>
@@ -102,6 +101,7 @@
       <DependentUpon>_3DxForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -111,12 +111,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3DxIcon_32.png.bin" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3DxIcon_16.png.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Licence.txt" />
+    <Content Include="LicenseAgreement3DxSDK.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
