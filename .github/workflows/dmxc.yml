@@ -25,6 +25,12 @@ jobs:
         
       - name: Download and extract DMXCDependencies
         run: |
+          If(Test-Path -Path dmxcplug.json) {
+            $dmxcplug = (Get-Content "dmxcplug.json" | ConvertFrom-Json)
+            Invoke-RestMethod -Uri "https://www.dmxcontrol.de/files/DMXControl_3/plugin-lib/dmxc-plugin-lib-$($dmxcplug.version).zip" -OutFile "deps.zip"
+            Expand-Archive "deps.zip" "bin/Release"
+            Expand-Archive "deps.zip" "temp"
+          }
           foreach ($folder in Get-ChildItem -Directory) {
             If(Test-Path -Path $folder/dmxcplug.json) {
               $dmxcplug = (Get-Content "${folder}/dmxcplug.json" | ConvertFrom-Json)
