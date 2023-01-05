@@ -17,6 +17,7 @@ using System.Collections.ObjectModel;
 using System.Drawing.Imaging;
 using System.IO;
 using ErrorEventArgs = LumosLIB.Kernel.Plugin.ErrorEventArgs;
+using LumosProtobuf.Resource;
 
 namespace Lumos3DconnexionPlugin
 {
@@ -33,7 +34,7 @@ namespace Lumos3DconnexionPlugin
         public const string PLUGIN_NAME = "3Dconnexion";
 
         private static readonly ILumosLog log = LumosLogger.getInstance<_3DxPlugin>();
-        private static readonly LumosResourceMetadata SETTINGS_FILE = new LumosResourceMetadata("_3DxPluginSettings.xml", ELumosResourceType.MANAGED_TREE);
+        private static readonly LumosResourceMetadata SETTINGS_FILE = new LumosResourceMetadata("_3DxPluginSettings.xml", EResourceContentType.ManagedTree);
 
         private _3DxForm _form;
         private int exceptionCounter;
@@ -108,9 +109,9 @@ namespace Lumos3DconnexionPlugin
         private void loadSettings()
         {
             //Check whether ResourceManager has a setting
-            if (ResourceManager.getInstance().existsResource(EResourceType.APPLICATION, SETTINGS_FILE))
+            if (ResourceManager.getInstance().ExistsResource(EResourceType.Application, SETTINGS_FILE))
             {
-                var r = ResourceManager.getInstance().loadResource(EResourceAccess.READ, EResourceType.APPLICATION, SETTINGS_FILE);
+                var r = ResourceManager.getInstance().TryLoadResource(EResourceType.Application, SETTINGS_FILE);
                 if (r.ManagedData != null)
                 {
                     //Loop through all axis and load settings if existing
@@ -136,7 +137,7 @@ namespace Lumos3DconnexionPlugin
                 i.setValue(a.ToString() + "-Deadzone", dz);
             }
             LumosResource r = new LumosResource(SETTINGS_FILE.Name, i);
-            ResourceManager.getInstance().saveResource(EResourceType.APPLICATION, r);
+            ResourceManager.getInstance().SaveResource(EResourceType.Application, r);
         }
 
         protected override void DisposePlugin(bool disposing)
@@ -174,7 +175,7 @@ namespace Lumos3DconnexionPlugin
 
         public bool existsResource(EResourceDataType type, string name)
         {
-            if (type == EResourceDataType.SYMBOL)
+            if (type == EResourceDataType.Symbol)
             {
                 if (name.Equals("3DxIcon") || name.Equals("3DxIcon_16") || name.Equals("3DxIcon_32"))
                     return true;
@@ -182,9 +183,9 @@ namespace Lumos3DconnexionPlugin
             return false;
         }
 
-        public ReadOnlyCollection<LumosDataMetadata> allResources(EResourceDataType type)
+        IReadOnlyList<LumosDataMetadata> IResourceProvider.allResources(EResourceDataType type)
         {
-            if (type == EResourceDataType.SYMBOL)
+            if (type == EResourceDataType.Symbol)
             {
                 List<LumosDataMetadata> ret = new List<LumosDataMetadata>()
                 {
@@ -198,18 +199,30 @@ namespace Lumos3DconnexionPlugin
             return null;
         }
 
-        public byte[] loadResource(EResourceDataType type, string name)
+        Stream IResourceProvider.loadResource(EResourceDataType type, string name)
         {
-            if (type == EResourceDataType.SYMBOL)
+            if (type == EResourceDataType.Symbol)
             {
+                //Properties.Resources.ResourceManager.GetObject("_3DxIcon_32_png")
                 switch (name)
                 {
                     case "3DxIcon":
                     case "3DxIcon_32":
-                        return (byte[]) Properties.Resources._3DxIcon_32_png.Clone();
-
+                        { 
+                            var i = Properties.Resources._3DxIcon_32_png.Clone() as System.Drawing.Image;
+                            var m = new System.IO.MemoryStream();
+                            i.Save(m, System.Drawing.Imaging.ImageFormat.Png);
+                            m.Position = 0;
+                            return m;
+                        }
                     case "3DxIcon_16":
-                        return (byte[]) Properties.Resources._3DxIcon_16_png.Clone();
+                        {
+                            var i = Properties.Resources._3DxIcon_16_png.Clone() as System.Drawing.Image;
+                            var m = new System.IO.MemoryStream();
+                            i.Save(m, System.Drawing.Imaging.ImageFormat.Png);
+                            m.Position = 0;
+                            return m;
+                        }
                 }
             }
 
