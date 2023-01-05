@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Lumos3DconnexionPlugin</RootNamespace>
     <AssemblyName>Lumos3DconnexionPlugin</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -41,9 +41,6 @@
     <Reference Include="3DconnexionDriver, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dep\3DconnexionDriver.dll</HintPath>
-    </Reference>
-    <Reference Include="DMXLIB">
-      <HintPath>dep\DMXLIB.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>dep\log4net.dll</HintPath>
