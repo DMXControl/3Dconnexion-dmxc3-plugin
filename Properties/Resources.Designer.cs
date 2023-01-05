@@ -61,22 +61,22 @@ namespace Lumos3DconnexionPlugin.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static byte[] _3DxIcon_16_png {
+        internal static System.Drawing.Bitmap _3dxicon_16 {
             get {
-                object obj = ResourceManager.GetObject("_3DxIcon_16_png", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("_3dxicon_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static byte[] _3DxIcon_32_png {
+        internal static System.Drawing.Bitmap _3dxicon_32 {
             get {
-                object obj = ResourceManager.GetObject("_3DxIcon_32_png", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("_3dxicon_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

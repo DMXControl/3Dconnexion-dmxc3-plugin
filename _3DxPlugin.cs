@@ -209,19 +209,27 @@ namespace Lumos3DconnexionPlugin
                     case "3DxIcon":
                     case "3DxIcon_32":
                         { 
-                            var i = Properties.Resources._3DxIcon_32_png.Clone() as System.Drawing.Image;
-                            var m = new System.IO.MemoryStream();
-                            i.Save(m, System.Drawing.Imaging.ImageFormat.Png);
-                            m.Position = 0;
-                            return m;
+                            var i = Properties.Resources.ResourceManager.GetObject("_3dxicon_32") as System.Drawing.Image;
+                            if (i != null)
+                            {
+                                var m = new System.IO.MemoryStream();
+                                i.Save(m, System.Drawing.Imaging.ImageFormat.Png);
+                                m.Position = 0;
+                                return m;
+                            }
+                            return null;
                         }
                     case "3DxIcon_16":
                         {
-                            var i = Properties.Resources._3DxIcon_16_png.Clone() as System.Drawing.Image;
-                            var m = new System.IO.MemoryStream();
-                            i.Save(m, System.Drawing.Imaging.ImageFormat.Png);
-                            m.Position = 0;
-                            return m;
+                            var i = Properties.Resources.ResourceManager.GetObject("_3dxicon_16") as System.Drawing.Image;
+                            if (i != null)
+                            {
+                                var m = new System.IO.MemoryStream();
+                                i.Save(m, System.Drawing.Imaging.ImageFormat.Png);
+                                m.Position = 0;
+                                return m;
+                            }
+                            return null;
                         }
                 }
             }
