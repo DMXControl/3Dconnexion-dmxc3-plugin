@@ -34,10 +34,10 @@ pipeline {
 				script{
 					try {
 						println('Copy artefacts from Job \"Lumos (Pipeline)/' + env.BRANCH_NAME.replaceAll("/", "%2F") + '\"')
-						copyArtifacts(projectName: 'Lumos (Pipeline)/' + env.BRANCH_NAME.replaceAll("/", "%2F"), flatten: true, filter: 'LumosGUI/bin/Release/*', target: 'dep');
+						copyArtifacts(projectName: 'Lumos (Pipeline)/' + env.BRANCH_NAME.replaceAll("/", "%2F"), flatten: true, filter: 'LumosGUI/*', target: 'dep');
 					} catch (hudson.AbortException e) {
 						println('Job \"Lumos (Pipeline)/' + env.BRANCH_NAME.replaceAll("/", "%2F") + '\" does not exist. Copy from default Job')
-						copyArtifacts(projectName: 'Lumos (Pipeline)/master', flatten: true, filter: 'LumosGUI/bin/Release/*', target: 'dep');
+						copyArtifacts(projectName: 'Lumos (Pipeline)/master', flatten: true, filter: 'LumosGUI/*', target: 'dep');
 					}
 					
 					copyArtifacts(projectName: '3Dconnexion Driver (Pipeline)', flatten: true, target: 'dep');
@@ -70,7 +70,9 @@ pipeline {
 		}
 		stage('Archive Artifacts'){
 			steps {
-				archiveArtifacts artifacts: 'bin/Release/Lumos3DconnexionPlugin.dll'
+				dir('bin/Release') {
+					archiveArtifacts artifacts: 'Lumos3DconnexionPlugin.dll'
+				}
 			}			
 		}
 	}
